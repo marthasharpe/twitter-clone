@@ -1,23 +1,12 @@
 import { Image, StyleSheet } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 
 import { Text, View } from "./Themed";
+import { TweetType } from "../types";
+import IconButton from "./IconButton";
 
 interface TweetProps {
-  tweet: {
-    id: string;
-    createdAt: string;
-    user: {
-      id: string;
-      name: string;
-      username: string;
-      image?: string;
-    };
-    content: string;
-    image?: string;
-    numberOfComments?: number;
-    numberOfRetweets?: number;
-    numberOfLikes?: number;
-  };
+  tweet: TweetType;
 }
 
 export default function Tweet({ tweet }: TweetProps) {
@@ -25,8 +14,24 @@ export default function Tweet({ tweet }: TweetProps) {
     <View style={styles.container}>
       <Image src={tweet.user.image} style={styles.userImage} />
       <View style={styles.tweetContainer}>
-        <Text style={styles.name}>{tweet.user.name}</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.name}>{tweet.user.name}</Text>
+          <Text style={styles.username}>@{tweet.user.username} 2h</Text>
+          <Entypo
+            name="dots-three-horizontal"
+            size={12}
+            color="grey"
+            style={{ marginLeft: "auto" }}
+          />
+        </View>
         <Text style={styles.content}>{tweet.content}</Text>
+        {tweet.image && <Image src={tweet.image} style={styles.image} />}
+        <View style={styles.footer}>
+          <IconButton icon="comment" text={tweet.numberOfComments || 0} />
+          <IconButton icon="retweet" text={tweet.numberOfRetweets || 0} />
+          <IconButton icon="heart" text={tweet.numberOfLikes || 0} />
+          <IconButton icon="share-apple" text={tweet.impressions || 0} />
+        </View>
       </View>
     </View>
   );
@@ -48,12 +53,28 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
   },
+  image: {
+    width: "100%",
+    aspectRatio: 16 / 9,
+    borderRadius: 15,
+    marginTop: 10,
+  },
   name: {
     fontWeight: "bold",
+  },
+  username: {
+    color: "grey",
+    marginLeft: 5,
   },
   content: {
     marginTop: 5,
     fontSize: 16,
     lineHeight: 16 * 1.5,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
   },
 });
