@@ -9,13 +9,8 @@ export default function TweetScreen() {
   const tweet = tweets.find((tweet) => tweet.id === id);
 
   if (!tweet) {
-    return <Text> Tweet {id} not found.</Text>;
+    return <Text> Tweet not found.</Text>;
   }
 
-  return (
-    <View>
-      <Stack.Screen options={{ title: "Tweet" }} />
-      <Tweet tweet={tweet} />
-    </View>
-  );
+  return <Tweet tweet={tweet} />;
 }
